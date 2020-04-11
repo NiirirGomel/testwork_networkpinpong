@@ -18,10 +18,8 @@ namespace Pong
         [SerializeField] private float ballRespawnTime = 3f;
         [SerializeField] private int pointsToWin = 5;
         [Space]
-        [SerializeField] private Text scoreField = default;
-        [SerializeField] private string scoreTemplate = "{0} - {1}";
-        [Space]
-        [SerializeField] private Text winField = default;
+        [SerializeField] private GameUI ui = default;
+
 
         private Player.Player[] players = new Player.Player[2];
         private Ball ball = default;
@@ -31,8 +29,9 @@ namespace Pong
             firstPlayerController.Player = players[0] = new Player.Player(firstPlayer);
             secondPlayerController.Player = players[1] = new Player.Player(secondPlayer);
             foreach (var p in players) p.OnDamaged += PlayerDamaged;
-            ShowScore();
-            winField.enabled = false;
+
+            ui.HideWin();
+            ui.ShowScore(players[1].Damage, players[0].Damage);
 
             ball = Instantiate(ballPrefab, ballPoint);
             
@@ -43,11 +42,10 @@ namespace Pong
         private void PlayerDamaged(Player.Player player)
         {
             ball.Destroy();
-            ShowScore();
+            ui.ShowScore(players[1].Damage, players[0].Damage);
             if (player.Damage == pointsToWin)
             {
-                winField.text = (player == players[0] ? "Right" : "Left") + " plaer win!";
-                winField.enabled = true;
+                ui.ShowWin(player == players[0] ? "Right" : "Left");
                 return;
             }
             StartCoroutine(BallRespawn(player == players[0] ? Vector2.right : Vector2.left));
@@ -58,11 +56,6 @@ namespace Pong
             yield return new WaitForSeconds(ballRespawnTime);
             ball.Spawn();
             ball.StartMove(dir);
-        }
-
-        private void ShowScore()
-        {
-            scoreField.text = string.Format(scoreTemplate, players[1].Damage, players[0].Damage);
         }
     }
 }

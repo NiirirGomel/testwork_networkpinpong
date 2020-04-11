@@ -271,9 +271,10 @@ MonoBehaviour:
   ballPoint: {fileID: 126731218}
   ballRespawnTime: 2
   pointsToWin: 5
-  scoreField: {fileID: 1699890609}
-  scoreTemplate: '{0} - {1}'
-  winField: {fileID: 2024422001}
+  ui:
+    scoreField: {fileID: 1699890609}
+    scoreTemplate: '{0} - {1}'
+    winField: {fileID: 2024422001}
 --- !u!4 &379101737
 Transform:
   m_ObjectHideFlags: 0
