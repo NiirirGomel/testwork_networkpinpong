@@ -8,7 +8,7 @@ namespace Pong.Player
         public delegate void DamagedDelegate(Player player);
         public event DamagedDelegate OnDamaged;
         public Roket Roket { get; private set; }
-        public int Points { get; private set; }
+        public int Damage { get; private set; }
 
         private PlayerSetup setup;
 
@@ -18,7 +18,7 @@ namespace Pong.Player
             Roket = GameObject.Instantiate(setup.Roket, setup.RoketPoint);
             setup.Gate.OnCollisionBall += () =>
             {
-                Points = Mathf.Min(Points + 1, 0);
+                Damage = Mathf.Max(Damage + 1, 0);
                 OnDamaged?.Invoke(this);
             };
         }
